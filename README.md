@@ -24,10 +24,10 @@ By implementing this Library Book Management System, librarians can efficiently 
 ## Implementation Plan
 To design and implement the Library Management System using the MVVM pattern in a WPF application, we will follow a structured approach. This will involve setting up the project, designing the model, view, and viewmodel components, and then integrating them to achieve the desired functionality.
 
-
 <Details>
   <Summary><b>1. What is MVVM?</b></Summary>
   
+
 The **Model-View-ViewModel** architecture _**separates**_ the development of the graphical user interface (**_View_**) from the business logic or back-end logic (**_Model_**). 
 The **_ViewModel_** acts as an intermediary, handling the logic and data binding between the View and the Model.
 
@@ -52,6 +52,7 @@ This separation improves code maintainability, testability, and scalability by o
 <Details>
     <Summary><b>3. Required Tools</b></Summary>
   
+
 To get started with this project, you'll need to install the following tools:
 - [**Visual Studio:**](https://visualstudio.microsoft.com/) The integrated development environment (IDE) for building .NET applications.
 
@@ -68,12 +69,12 @@ To get started with this project, you'll need to install the following tools:
 
 Start by opening Visual Studio and get ready to add your projects!
 
-##### 1. Initialize the Solution
+## 1. Initialize the Solution
 Create a New Solution:
   Select File > New Project > Blank Solution and name it: Library
 For better organization, create a "src" folder in which all the projects will be located.
 
-##### 2. Project Structure Setup
+## 2. Project Structure Setup
 To facilitate development, maintenance, and testing, we will divide this solution into five projects: View, Client, Server, Shared, and Test.
 
 - **View**
@@ -96,7 +97,7 @@ Add a Class Library project named: Library.Shared.
 Contains unit tests to ensure the application functions correctly based on the defined requirements.
 Add an xUnit Test Project named: Library.Test.
 
-##### 3. Set Up Project References
+## 3. Set Up Project References
 To ensure proper communication and dependency between the projects, set up project references as follows:
 ```Right Click on  the Project > Select Add > Project Reference.```
 
@@ -110,3 +111,121 @@ You will end up with this!
 ![image](https://github.com/user-attachments/assets/4632d4e9-ea53-45d6-8905-6ab6baeac098)
 </Details> 
 
+<Details>
+  <Summary><b>5. Set Up EF Core</b></Summary>
+
+ ## 1. Add EF Core Packages
+  To work with Entity Framework Core (EF Core) for data access, add the following NuGet packages to the Library.Server project:
+
+  - **Microsoft.EntityFrameworkCore:** The core EF package for data access.
+
+     ```bash
+	 PM> dotnet add package Microsoft.EntityFrameworkCore
+	 ```
+
+  - **Microsoft.EntityFrameworkCore.SqlServer:** The SQL Server provider for EF Core.
+
+      ```bash
+	  PM> dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+	  ```
+
+  - **Microsoft.EntityFrameworkCore.Tools:** Tools for EF Core migrations and commands.
+
+     ```bash
+	 PM> dotnet add package Microsoft.EntityFrameworkCore.Tools
+	 ```
+	 
+## 2. Create the Data Model
+
+  Define the data model for the Book and Author entity in the Library.Server project. This model will represent the book catalog and its properties.
+  ```csharp
+  //Project: Server
+  //File: Book.cs
+internal class Book
+{
+    [Key]
+    public int Id { get; set; }
+    [MaxLength(100)]
+    public required string Title { get; set; }
+    [Display(Name = "Author")]
+    public virtual int AuthorId { get; set; }
+    [ForeignKey("AuthorId")]
+    public virtual required Author Author { get; set; }
+    public int Year { get; set; }
+    public BookGenre Genre { get; set; }
+}
+
+  ```
+  ```csharp
+  //Project: Server
+  //File: Author.cs
+  internal class Author
+{
+    [Key]
+    public int Id { get; set; }
+    [MaxLength(50)]
+    public required string FirstName { get; set; }
+    [MaxLength(50)]
+    public required string LastName { get; set; }
+}
+  ```
+  ```csharp
+  //Project: Shared
+  //File: DbEnum.cs
+  public enum BookGenre
+  {
+	  Fiction,
+	  NonFiction,
+	  Mystery,
+	  Romance,
+	  ScienceFiction,
+	  Biography,
+	  History,
+	  SelfHelp
+  }
+  ```
+
+ ## 3. Set Up the Database Context
+
+  Create a database context class that inherits from DbContext in the Library.Server project. This class will define the database connection and include a DbSet for the Book entity.
+  ```csharp
+  //Project: Server
+  //File: LibraryContext.cs
+
+internal class LibraryContext : DbContext, ILibraryEntities
+{
+    public DbSet<Book> Book { get; set; }
+    public DbSet<Author> Author { get; set; }
+
+    public IQueryable<Book> BookEntities => Set<Book>();
+    public Book? FindBook(int id) => Find<Book>(id);
+    public IQueryable<Author> AuthorEntities => Set<Author>();
+    public Author? FindAuthor(int id) => Find<Author>(id);
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer("Data Source=(local);Integrated Security=true;Initial Catalog=Library;MultipleActiveResultSets=True;TrustServerCertificate=True;Encrypt=False");
+    }
+}
+interface ILibraryEntities
+{
+    IQueryable<Book> BookEntities { get; }
+    Book? FindBook(int id);
+    IQueryable<Author> AuthorEntities { get; }
+    Author? FindAuthor(int id);
+}
+  ```
+
+ ## 4. Add Migration and Update Database
+
+  Use EF Core migrations to create the database schema based on the data model. Run the following commands in the Library.Server project directory:
+  ```bash
+  dotnet ef migrations add InitialCreate
+  dotnet ef database update
+  ```
+  These commands will generate the migration files and update the database with the Book table.
+</Details>
+
+
+
+ 
