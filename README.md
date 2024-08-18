@@ -24,12 +24,10 @@ By implementing this Library Book Management System, librarians can efficiently 
 ## Implementation Plan
 To design and implement the Library Management System using the MVVM pattern in a WPF application, we will follow a structured approach. This will involve setting up the project, designing the model, view, and viewmodel components, and then integrating them to achieve the desired functionality.
 
-1. [What is MVVM?](#1-what-is-mvvm)
-2. [Why .NET, C#, and MSSQL?](#2-why-net-c-and-mssql)
-3. [Let's Get Started](#3-lets-get-started)
----
 
-### 1. What is MVVM?
+<Details>
+  <Summary><b>1. What is MVVM?</b></Summary>
+  
 The **Model-View-ViewModel** architecture _**separates**_ the development of the graphical user interface (**_View_**) from the business logic or back-end logic (**_Model_**). 
 The **_ViewModel_** acts as an intermediary, handling the logic and data binding between the View and the Model.
 
@@ -38,19 +36,22 @@ In MVVM, the ViewModel updates the View through data binding, while user interac
 This separation improves code maintainability, testability, and scalability by organizing the code into distinct components. 
 
 ![image](https://github.com/user-attachments/assets/24e54332-eb93-4652-8e92-a9f3ef03859b)
+</Details>
 
----
-### 2. Why .NET, C#, and MSSQL?
+<Details>
+  <Summary><b>2. Why .NET, C#, and MSSQL?</b></Summary>
+
 - **.NET Core:** Provides a cross-platform, high-performance framework that supports modern application development. Its integration with MVVM enhances separation of concerns and streamlines development for various platforms.
 
 - **C#:** A modern programming language that works seamlessly with .NET, offering powerful features for implementing MVVM and ensuring efficient, maintainable code.
 
 - **MSSQL:** A reliable database system that integrates well with .NET applications, providing robust data management and security features to support the application's data needs effectively.
-  
----
 
-### 3. Let's Get Started!
-#### Required Tools
+</Details>
+
+<Details>
+    <Summary><b>3. Required Tools</b></Summary>
+  
 To get started with this project, you'll need to install the following tools:
 - [**Visual Studio:**](https://visualstudio.microsoft.com/) The integrated development environment (IDE) for building .NET applications.
 
@@ -60,7 +61,11 @@ To get started with this project, you'll need to install the following tools:
 
 - **Install** [**.NET 8:**](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) The latest version of the .NET framework required for developing and running your application. Ensure you download the SDK to develop and the Runtime to run your applications.
 
-#### Setting Up Your Solution
+</Details>
+
+<Details>
+  <Summary><b>4. Setting Up Your Solution</b></Summary>
+
 Start by opening Visual Studio and get ready to add your projects!
 
 ##### 1. Initialize the Solution
@@ -76,7 +81,7 @@ Contains XAML files for defining the user interface and UI resources like styles
 Add a WPF Application project named: Library.View.
 
 - **Client**
-Holds ViewModels for data binding and client-side logic, including commands and services.
+Holds ViewModelsfor data binding and client-side logic, including commands and services.
 Add a Class Library project named: Library.Client.
 
 - **Server**
@@ -93,7 +98,7 @@ Add an xUnit Test Project named: Library.Test.
 
 ##### 3. Set Up Project References
 To ensure proper communication and dependency between the projects, set up project references as follows:
-Right Clint on  the Project > Select Add > Project Reference.
+```Right Click on  the Project > Select Add > Project Reference.```
 
 - **Library.View** has the following reference: Library.Client
 - **Library.Client** has the following reference: Library.Shared
@@ -102,4 +107,6 @@ Right Clint on  the Project > Select Add > Project Reference.
 
 You will end up with this!
 
-![image](https://github.com/user-attachments/assets/cf8ae821-1751-4f77-8e4f-aed312358e54)
+![image](https://github.com/user-attachments/assets/4632d4e9-ea53-45d6-8905-6ab6baeac098)
+</Details> 
+
